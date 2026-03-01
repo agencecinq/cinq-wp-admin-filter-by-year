@@ -38,11 +38,12 @@ function wp_admin_filter_by_year_parse_query( WP_Query $query ): WP_Query {
 		return $query;
 	}
 
-	if ( 0 === $_REQUEST['y'] ) {
+	$y = isset( $_REQUEST['y'] ) ? absint( $_REQUEST['y'] ) : 0;
+	if ( 0 === $y ) {
 		return $query;
 	}
 
-	$query->set( 'year', $_REQUEST['y'] );
+	$query->set( 'year', $y );
 
 	return $query;
 }
