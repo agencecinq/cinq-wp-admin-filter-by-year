@@ -109,7 +109,7 @@ function wp_admin_filter_by_year_restrict_manage_runs( string $post_type, string
 			rsort( $values );
 			$values = array_combine( $values, $values );
 
-			$y = isset( $_GET['y'] ) ? sanitize_text_field( wp_unslash( $_GET['y'] ) ) : '';
+			$y = isset( $_GET['y'] ) ? absint( $_GET['y'] ?? 0 ) : '';
 
 			// Keep other GET parameters.
 			foreach ( $_GET as $key => $val ) {
