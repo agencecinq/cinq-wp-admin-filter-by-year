@@ -1,11 +1,6 @@
-# OS
 .DS_Store
-Thumbs.db
-
-# IDE
+._*
 .idea/
 .vscode/
-*.sublime-*
-
-# Composer (si tu ajoutes des dépendances plus tard)
+*.log
 /vendor/

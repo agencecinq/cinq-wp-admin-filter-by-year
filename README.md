@@ -1,48 +1,64 @@
-# WP Admin Filter By Year
+# CINQ Admin Filter By Year
 
-WordPress plugin that adds a year dropdown filter in the admin for custom post type list screens.
+WordPress plugin that adds a year drop-down filter to the admin list screens of custom post types. No settings screen.
 
-## Features
-
-- Year dropdown on edit screens (edit.php) for non–built-in post types
-- Year options respect active filters (e.g. taxonomy such as author)
-- Other query params (taxonomy, pagination, etc.) are preserved when filtering by year
-
-## Installation
-
-1. Download or clone this repository
-2. Copy the `wp-admin-filter-by-year` folder into `wp-content/plugins/`
-3. Activate the plugin under **Plugins** (or via WP-CLI: `wp plugin activate wp-admin-filter-by-year`)
+**Repository:** [`agencecinq/cinq-wp-admin-filter-by-year`](https://github.com/agencecinq/cinq-wp-admin-filter-by-year)
 
 ## Requirements
 
-- WordPress 5.x+
-- PHP 7.4+
+- WordPress 6.0+
+- PHP 8.1+
 
-## Publishing to GitHub
-
-1. **Create a new repository on GitHub** (empty, no README)
-2. **In a terminal**, from the plugin folder:
+## Lint (WordPress Coding Standards)
 
 ```bash
-cd wp-content/plugins/wp-admin-filter-by-year
-git init
-git add .
-git commit -m "Initial commit"
-git branch -M main
-git remote add origin https://github.com/YOUR_USER/YOUR_REPO.git
-git push -u origin main
+composer install
+composer lint          # phpcs
+composer lint:fix     # phpcbf (auto-fix)
 ```
 
-3. Replace `YOUR_USER` and `YOUR_REPO` with your GitHub username and repository name.
+Use `./vendor/bin/phpcs`, not the global `phpcs` binary — the global install does not register the WordPress standards.
 
-To install the plugin from GitHub on another site:
+## Install
+
+Copy the folder to `wp-content/plugins/cinq-wp-admin-filter-by-year` and activate **CINQ Admin Filter By Year** in the WordPress admin, or with WP-CLI:
 
 ```bash
-cd wp-content/plugins
-git clone https://github.com/YOUR_USER/YOUR_REPO.git wp-admin-filter-by-year
+wp plugin activate cinq-wp-admin-filter-by-year
 ```
+
+To load it on every request without activation, copy the plugin file into `mu-plugins`. It is then listed under **Plugins → Must-Use**.
+
+```bash
+cp cinq-wp-admin-filter-by-year.php /path/to/wp-content/mu-plugins/
+```
+
+## Behaviour
+
+The drop-down sits next to the core filters, above the list table. It submits the public `year` query var, so WordPress filters the list itself: `edit.php?post_type=project&year=2024`.
+
+It only lists years that have posts in the current view: the current status (All, Draft, Trash…) and taxonomy filters are taken into account.
+
+### Optional filter
+
+```php
+// Post types that get the year filter (default: every non built-in post type).
+add_filter( 'cinq_admin_filter_by_year_post_types', fn () => array( 'project', 'post' ) );
+```
+
+## Migration from `wp-admin-filter-by-year`
+
+1. Deactivate and delete `wp-admin-filter-by-year`, then install and activate `cinq-wp-admin-filter-by-year`.
+2. The URL parameter is now `year` instead of `y`. Update bookmarks or links such as `edit.php?post_type=project&y=2024`.
+3. The functions are renamed and the parse query function is gone. Replace any call or `remove_action()` / `remove_filter()` that targets `wp_admin_filter_by_year_*` with `cinq_admin_filter_by_year_dropdown`.
+4. The select no longer has the `filter-by-year` class. Target `#filter-by-year` instead.
+5. Query parameters that are not fields of the filter form (for example a taxonomy term opened from a column link) are no longer kept when filtering by year, as with the core date filter.
+
+## Scope
+
+- Post types: every non built-in post type by default, more or fewer through `cinq_admin_filter_by_year_post_types`
+- No options, no admin UI, no front-end output
 
 ## License
 
-GPL v2 or later
+MIT © [CINQ](https://agencecinq.com)
