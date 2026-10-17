@@ -2,6 +2,8 @@
 
 WordPress plugin that adds a year drop-down filter to the admin list screens of custom post types. No settings screen.
 
+WordPress itself only filters these lists by month, with its “All dates” drop-down. It can filter them by year, through the public `year` query var (`edit.php?post_type=project&year=2024`), but offers no way to pick a year. This plugin adds that drop-down and nothing else: the filtering is done by WordPress.
+
 **Repository:** [`agencecinq/cinq-wp-admin-filter-by-year`](https://github.com/agencecinq/cinq-wp-admin-filter-by-year)
 
 ## Requirements

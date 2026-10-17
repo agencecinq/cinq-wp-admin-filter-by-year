@@ -24,7 +24,15 @@ defined( 'ABSPATH' ) || exit;
  */
 function cinq_admin_filter_by_year_post_types(): array {
 	$default_post_types = array_values( get_post_types( array( '_builtin' => false ) ) );
-	$post_types         = apply_filters( 'cinq_admin_filter_by_year_post_types', $default_post_types );
+
+	/**
+	 * Filters the post types whose admin list screens get the year filter.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string[] $post_types Post type names. Default every non built-in post type.
+	 */
+	$post_types = apply_filters( 'cinq_admin_filter_by_year_post_types', $default_post_types );
 
 	if ( ! is_array( $post_types ) ) {
 		return array();
