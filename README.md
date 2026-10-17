@@ -33,6 +33,27 @@ To load it on every request without activation, copy the plugin file into `mu-pl
 cp cinq-wp-admin-filter-by-year.php /path/to/wp-content/mu-plugins/
 ```
 
+## Translations
+
+French is included in [`languages/`](languages). The plugin does not load translations itself: WordPress loads them from its languages folder, which also works when the plugin is a must-use plugin.
+
+Copy both French files to `wp-content/languages/plugins/`:
+
+- `cinq-wp-admin-filter-by-year-fr_FR.l10n.php`, read by WordPress 6.5 and later;
+- `cinq-wp-admin-filter-by-year-fr_FR.mo`, for earlier versions.
+
+To update them after changing a string:
+
+```bash
+wp i18n make-pot . languages/cinq-wp-admin-filter-by-year.pot --exclude=vendor
+msgmerge --update --backup=none languages/cinq-wp-admin-filter-by-year-fr_FR.po languages/cinq-wp-admin-filter-by-year.pot
+# Translate the new strings in the .po file, then:
+msgfmt -o languages/cinq-wp-admin-filter-by-year-fr_FR.mo languages/cinq-wp-admin-filter-by-year-fr_FR.po
+wp i18n make-php languages
+```
+
+`wp i18n make-php` needs WP-CLI 2.8 or later.
+
 ## Behaviour
 
 The drop-down sits next to the core filters, above the list table. It submits the public `year` query var, so WordPress filters the list itself: `edit.php?post_type=project&year=2024`.
