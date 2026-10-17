@@ -71,19 +71,22 @@ add_filter( 'cinq_wp_admin_filter_by_year_post_types', fn () => array( 'project'
 
 ## Migration from 1.x
 
-2.0.0 names the hooks after the plugin slug, like every CINQ plugin: `cinq-wp-admin-filter-by-year` gives the `cinq_wp_admin_filter_by_year_` prefix. The old name is not kept.
+2.0.0 names the hook and the functions after the plugin slug, like every CINQ plugin: `cinq-wp-admin-filter-by-year` gives the `cinq_wp_admin_filter_by_year_` prefix. The old names are not kept.
 
-| 1.x | 2.0.0 |
-| --- | --- |
-| `cinq_admin_filter_by_year_post_types` | `cinq_wp_admin_filter_by_year_post_types` |
+| | 1.x | 2.0.0 |
+| --- | --- | --- |
+| Filter | `cinq_admin_filter_by_year_post_types` | `cinq_wp_admin_filter_by_year_post_types` |
+| Function | `cinq_admin_filter_by_year_post_types()` | `cinq_wp_admin_filter_by_year_post_types()` |
+| Function | `cinq_admin_filter_by_year_years()` | `cinq_wp_admin_filter_by_year_years()` |
+| Function | `cinq_admin_filter_by_year_dropdown()` | `cinq_wp_admin_filter_by_year_dropdown()` |
 
-Rename the filter in `add_filter()` and `remove_filter()` calls. The functions keep their names.
+Rename the filter in `add_filter()` and `remove_filter()` calls, and the functions where you call them or unhook them, e.g. `remove_action( 'restrict_manage_posts', 'cinq_wp_admin_filter_by_year_dropdown' )`.
 
 ## Migration from `wp-admin-filter-by-year`
 
 1. Deactivate and delete `wp-admin-filter-by-year`, then install and activate `cinq-wp-admin-filter-by-year`.
 2. The URL parameter is now `year` instead of `y`. Update bookmarks or links such as `edit.php?post_type=project&y=2024`.
-3. The functions are renamed and the parse query function is gone. Replace any call or `remove_action()` / `remove_filter()` that targets `wp_admin_filter_by_year_*` with `cinq_admin_filter_by_year_dropdown`.
+3. The functions are renamed and the parse query function is gone. Replace any call or `remove_action()` / `remove_filter()` that targets `wp_admin_filter_by_year_*` with `cinq_wp_admin_filter_by_year_dropdown`.
 4. The select no longer has the `filter-by-year` class. Target `#filter-by-year` instead.
 5. Query parameters that are not fields of the filter form (for example a taxonomy term opened from a column link) are no longer kept when filtering by year, as with the core date filter.
 

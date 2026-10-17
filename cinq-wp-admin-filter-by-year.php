@@ -12,7 +12,7 @@
  * License URI: https://opensource.org/licenses/MIT
  * Text Domain: cinq-wp-admin-filter-by-year
  *
- * @package CinqAdminFilterByYear
+ * @package CinqWpAdminFilterByYear
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -22,7 +22,7 @@ defined( 'ABSPATH' ) || exit;
  *
  * @return array<int, string>
  */
-function cinq_admin_filter_by_year_post_types(): array {
+function cinq_wp_admin_filter_by_year_post_types(): array {
 	$default_post_types = array_values( get_post_types( array( '_builtin' => false ) ) );
 
 	/**
@@ -50,7 +50,7 @@ function cinq_admin_filter_by_year_post_types(): array {
  * @param string $post_type Post type slug.
  * @return array<int, int>
  */
-function cinq_admin_filter_by_year_years( string $post_type ): array {
+function cinq_wp_admin_filter_by_year_years( string $post_type ): array {
 	global $wpdb, $wp_query;
 
 	$post_status = $wp_query->get( 'post_status' );
@@ -92,12 +92,12 @@ function cinq_admin_filter_by_year_years( string $post_type ): array {
  * @param string $post_type Post type of the list screen.
  * @return void
  */
-function cinq_admin_filter_by_year_dropdown( string $post_type ): void {
-	if ( ! in_array( $post_type, cinq_admin_filter_by_year_post_types(), true ) ) {
+function cinq_wp_admin_filter_by_year_dropdown( string $post_type ): void {
+	if ( ! in_array( $post_type, cinq_wp_admin_filter_by_year_post_types(), true ) ) {
 		return;
 	}
 
-	$years    = cinq_admin_filter_by_year_years( $post_type );
+	$years    = cinq_wp_admin_filter_by_year_years( $post_type );
 	$selected = (int) get_query_var( 'year' );
 
 	if ( $selected > 0 && ! in_array( $selected, $years, true ) ) {
@@ -119,4 +119,4 @@ function cinq_admin_filter_by_year_dropdown( string $post_type ): void {
 	<?php
 }
 
-add_action( 'restrict_manage_posts', 'cinq_admin_filter_by_year_dropdown' );
+add_action( 'restrict_manage_posts', 'cinq_wp_admin_filter_by_year_dropdown' );
