@@ -1,0 +1,43 @@
+# Copyright (C) 2026 CINQ
+# This file is distributed under the MIT.
+msgid ""
+msgstr ""
+"Project-Id-Version: CINQ Admin Filter By Year 1.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/cinq-wp-admin-filter-by-year\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-10-17T12:56:06+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.6.0\n"
+"X-Domain: cinq-wp-admin-filter-by-year\n"
+
+#. Plugin Name of the plugin
+msgid "CINQ Admin Filter By Year"
+msgstr ""
+
+#. Plugin URI of the plugin
+msgid "https://github.com/agencecinq/cinq-wp-admin-filter-by-year"
+msgstr ""
+
+#. Description of the plugin
+msgid "Adds a year drop-down filter to the admin list screens of custom post types. No settings screen."
+msgstr ""
+
+#. Author of the plugin
+msgid "CINQ"
+msgstr ""
+
+#. Author URI of the plugin
+msgid "https://agencecinq.com/"
+msgstr ""
+
+#: cinq-wp-admin-filter-by-year.php:104
+msgid "Filter by year"
+msgstr ""
+
+#: cinq-wp-admin-filter-by-year.php:106
+msgid "All years"
+msgstr ""
