@@ -66,8 +66,18 @@ It only lists years that have posts in the current view: the current status (All
 
 ```php
 // Post types that get the year filter (default: every non built-in post type).
-add_filter( 'cinq_admin_filter_by_year_post_types', fn () => array( 'project', 'post' ) );
+add_filter( 'cinq_wp_admin_filter_by_year_post_types', fn () => array( 'project', 'post' ) );
 ```
+
+## Migration from 1.x
+
+2.0.0 names the hooks after the plugin slug, like every CINQ plugin: `cinq-wp-admin-filter-by-year` gives the `cinq_wp_admin_filter_by_year_` prefix. The old name is not kept.
+
+| 1.x | 2.0.0 |
+| --- | --- |
+| `cinq_admin_filter_by_year_post_types` | `cinq_wp_admin_filter_by_year_post_types` |
+
+Rename the filter in `add_filter()` and `remove_filter()` calls. The functions keep their names.
 
 ## Migration from `wp-admin-filter-by-year`
 
@@ -79,7 +89,7 @@ add_filter( 'cinq_admin_filter_by_year_post_types', fn () => array( 'project', '
 
 ## Scope
 
-- Post types: every non built-in post type by default, more or fewer through `cinq_admin_filter_by_year_post_types`
+- Post types: every non built-in post type by default, more or fewer through `cinq_wp_admin_filter_by_year_post_types`
 - No options, no admin UI, no front-end output
 
 ## License
