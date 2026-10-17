@@ -3,7 +3,7 @@
  * Plugin Name: CINQ Admin Filter By Year
  * Plugin URI: https://github.com/agencecinq/cinq-wp-admin-filter-by-year
  * Description: Adds a year drop-down filter to the admin list screens of custom post types. No settings screen.
- * Version: 1.0.0
+ * Version: 2.0.0
  * Author: CINQ
  * Author URI: https://agencecinq.com/
  * Requires at least: 6.0
@@ -28,11 +28,11 @@ function cinq_admin_filter_by_year_post_types(): array {
 	/**
 	 * Filters the post types whose admin list screens get the year filter.
 	 *
-	 * @since 1.0.0
+	 * @since 2.0.0 Renamed from `cinq_admin_filter_by_year_post_types`.
 	 *
 	 * @param string[] $post_types Post type names. Default every non built-in post type.
 	 */
-	$post_types = apply_filters( 'cinq_admin_filter_by_year_post_types', $default_post_types );
+	$post_types = apply_filters( 'cinq_wp_admin_filter_by_year_post_types', $default_post_types );
 
 	if ( ! is_array( $post_types ) ) {
 		return array();
