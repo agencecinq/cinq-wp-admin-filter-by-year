@@ -2,7 +2,7 @@
 # This file is distributed under the MIT.
 msgid ""
 msgstr ""
-"Project-Id-Version: CINQ Admin Filter By Year 2.0.0\n"
+"Project-Id-Version: CINQ Admin Filter By Year 2.0.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/cinq-wp-admin-filter-by-year\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
