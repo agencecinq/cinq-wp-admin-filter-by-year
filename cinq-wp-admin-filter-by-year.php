@@ -3,7 +3,7 @@
  * Plugin Name: CINQ Admin Filter By Year
  * Plugin URI: https://github.com/agencecinq/cinq-wp-admin-filter-by-year
  * Description: Adds a year drop-down filter to the admin list screens of custom post types. No settings screen.
- * Version: 2.0.1
+ * Version: 2.0.2
  * Author: CINQ
  * Author URI: https://agencecinq.com/
  * Requires at least: 6.0
@@ -44,43 +44,51 @@ function cinq_wp_admin_filter_by_year_post_types(): array {
 /**
  * Years that have posts in the current list view, most recent first.
  *
- * Follows the status and taxonomy filters of the main query, so every
- * option returns posts.
+ * Runs the query of the list without its year, so the years follow every
+ * other filter (status, author, search, month, taxonomy…) and every option
+ * returns posts.
  *
- * @param string $post_type Post type slug.
  * @return array<int, int>
  */
-function cinq_wp_admin_filter_by_year_years( string $post_type ): array {
+function cinq_wp_admin_filter_by_year_years(): array {
 	global $wpdb, $wp_query;
 
-	$post_status = $wp_query->get( 'post_status' );
-	$status_sql  = is_string( $post_status ) && '' !== $post_status
-		? $wpdb->prepare( 'AND post_status = %s', $post_status )
-		: "AND post_status NOT IN ( 'auto-draft', 'trash' )";
-
-	$tax_sql = $wp_query->tax_query instanceof \WP_Tax_Query
-		? $wp_query->tax_query->get_sql( $wpdb->posts, 'ID' )
-		: array(
-			'join'  => '',
-			'where' => '',
-		);
-
-	// phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Same query as core months_dropdown(); the status and taxonomy clauses are built by $wpdb->prepare() and WP_Tax_Query.
-	$years = $wpdb->get_col(
-		$wpdb->prepare(
-			"SELECT DISTINCT YEAR( post_date )
-			FROM $wpdb->posts
-			{$tax_sql['join']}
-			WHERE post_type = %s
-			$status_sql
-			{$tax_sql['where']}
-			ORDER BY 1 DESC",
-			$post_type
+	$years_query = new \WP_Query();
+	$query_vars  = array_merge(
+		$wp_query->query_vars,
+		array(
+			'year'                   => 0,
+			'nopaging'               => true,
+			'no_found_rows'          => true,
+			'fields'                 => 'ids',
+			'update_post_meta_cache' => false,
+			'update_post_term_cache' => false,
 		)
 	);
-	// phpcs:enable
 
-	return array_map( 'intval', $years );
+	// Selects the distinct years instead of the IDs, which the `ids` fields return as integers.
+	$select_years = static function ( array $clauses, \WP_Query $query ) use ( $wpdb, $years_query ): array {
+		if ( $query !== $years_query ) {
+			return $clauses;
+		}
+
+		return array_merge(
+			$clauses,
+			array(
+				'distinct' => 'DISTINCT',
+				'fields'   => "YEAR( {$wpdb->posts}.post_date )",
+				'groupby'  => '',
+				'orderby'  => '1 DESC',
+				'limits'   => '',
+			)
+		);
+	};
+
+	add_filter( 'posts_clauses', $select_years, PHP_INT_MAX, 2 );
+	$years = $years_query->query( $query_vars );
+	remove_filter( 'posts_clauses', $select_years, PHP_INT_MAX );
+
+	return $years;
 }
 
 add_action( 'restrict_manage_posts', 'cinq_wp_admin_filter_by_year_dropdown' );
@@ -99,7 +107,7 @@ function cinq_wp_admin_filter_by_year_dropdown( string $post_type ): void {
 		return;
 	}
 
-	$years    = cinq_wp_admin_filter_by_year_years( $post_type );
+	$years    = cinq_wp_admin_filter_by_year_years();
 	$selected = (int) get_query_var( 'year' );
 
 	if ( $selected > 0 && ! in_array( $selected, $years, true ) ) {
