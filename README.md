@@ -60,7 +60,7 @@ wp i18n make-php languages
 
 The drop-down sits next to the core filters, above the list table. It submits the public `year` query var, so WordPress filters the list itself: `edit.php?post_type=project&year=2024`.
 
-It only lists years that have posts in the current view: the current status (All, Draft, Trash…) and taxonomy filters are taken into account.
+It only lists years that have posts in the current view: it runs the query of the list without its year, so every other filter is taken into account, the status (All, Mine, Draft, Trash…), the search, the month, the taxonomy terms and the query vars set by other plugins. With a month chosen, it lists only the year of that month.
 
 ### Optional filter
 
